@@ -33,7 +33,7 @@ This makes the script fully compatible with the **PRTG EXE/Script Sensor**.
 ## Installation
 1. Download the script:
    ```bash
-   wget <REPLACE-WITH-GITHUB-RAW-URL>/prtg_service_ActiveMQ.sh
+   wget https://raw.githubusercontent.com/MBiesma/prtg_service_ActiveMQ.sh/refs/heads/main/README.md
    ```
 
 2. Make it executable:
