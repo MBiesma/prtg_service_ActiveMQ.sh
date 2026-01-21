@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 ###########################################################
@@ -10,10 +11,14 @@
 
 SERVICE="activemq.service"
 
-# Step 1: Check if ActiveMQ service exists on this system
-if systemctl list-unit-files | grep -qE "^[[:space:]]*${SERVICE}[[:space:]]"; then
-    
-    # Check if the service is running
+###########################################################
+# Step 1: Check if the ActiveMQ systemd service exists
+# Using "systemctl status" instead of "list-unit-files"
+# prevents the 'Broken pipe' error.
+###########################################################
+if systemctl status "$SERVICE" >/dev/null 2>&1; then
+
+    # Step 1b: Service exists → check if it is active
     if systemctl is-active --quiet "$SERVICE"; then
         echo "OK"
         exit 0
@@ -23,7 +28,10 @@ if systemctl list-unit-files | grep -qE "^[[:space:]]*${SERVICE}[[:space:]]"; th
     fi
 fi
 
-# Step 2: Fallback for older servers — detect ActiveMQ process manually
+###########################################################
+# Step 2: Fallback for older servers without systemd service
+# Detect ActiveMQ via process inspection
+###########################################################
 if ps aux | grep -Eiv "grep|prtg_service_ActiveMQ.sh" | grep -Eq "activemq|apache-activemq|org\.apache\.activemq|bin/activemq"; then
     echo "OK"
     exit 0
